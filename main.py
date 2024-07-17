@@ -4,14 +4,14 @@ from langchain.document_loaders.csv_loader import CSVLoader
 from langchain.prompts import PromptTemplate
 from langchain.chains import RetrievalQA
 from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_community.vectorstores import Chroma, FAISS
+from langchain_community.vectorstores import Chroma
 
 import os
 
 #LLM and key loading function
 def load_LLM(groq_api_key):
     """Logic for loading the chain you want to use should go here."""
-    # Make sure your openai_api_key is set as an environment variable
+    # Make sure your groq_api_key is set as an environment variable
     llm = ChatGroq(temperature=0, groq_api_key=groq_api_key)
     return llm
 
@@ -21,7 +21,7 @@ st.set_page_config(page_title="Ask from CSV File with FAQs about Napoleon")
 st.header("Ask from CSV File with FAQs about Napoleon")
 
 
-#Input groq API Key
+#Input Groq API Key
 def get_groq_api_key():
     input_text = st.text_input(
         label="Groq API Key ",  
@@ -41,15 +41,18 @@ if groq_api_key:
     def create_db():
         loader = CSVLoader(file_path='napoleon-faqs.csv', source_column="prompt")
         documents = loader.load()
-        vectordb = FAISS.from_documents(documents, embedding)
+        vectordb = Chroma.from_documents(documents, embedding, persist_directory="./my_vectordb")
 
         # Save vector database locally
-        vectordb.save_local(vectordb_file_path)
+        vectordb.persist()
 
 
     def execute_chain():
         # Load the vector database from the local folder
-        vectordb = FAISS.load_local(vectordb_file_path, embedding)
+        loader = CSVLoader(file_path='napoleon-faqs.csv', source_column="prompt")
+        documents = loader.load()
+        vectordb = Chroma.from_documents(documents, embedding, persist_directory="./my_vectordb")
+        vectordb.get()
 
         # Create a retriever for querying the vector database
         retriever = vectordb.as_retriever(score_threshold=0.7)
@@ -67,7 +70,7 @@ if groq_api_key:
             input_variables=["context", "question"]
         )
         
-        llm = load_LLM(openai_api_key=groq_api_key)
+        llm = load_LLM(groq_api_key=groq_api_key)
 
         chain = RetrievalQA.from_chain_type(
             llm=llm,
@@ -94,7 +97,7 @@ if groq_api_key:
 
     if question:
         chain = execute_chain()
-        response = chain(question)
+        response = chain.invoke(question)
 
         st.header("Answer")
         st.write(response["result"])
