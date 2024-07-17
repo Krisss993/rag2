@@ -1,5 +1,5 @@
 import streamlit as st
-from langchain_openai import OpenAI
+from langchain_groq import ChatGroq
 from langchain.document_loaders.csv_loader import CSVLoader
 from langchain.prompts import PromptTemplate
 from langchain.chains import RetrievalQA
@@ -9,10 +9,10 @@ from langchain_community.vectorstores import Chroma, FAISS
 import os
 
 #LLM and key loading function
-def load_LLM(openai_api_key):
+def load_LLM(groq_api_key):
     """Logic for loading the chain you want to use should go here."""
     # Make sure your openai_api_key is set as an environment variable
-    llm = OpenAI(temperature=0, groq_api_key=groq_api_key)
+    llm = ChatGroq(temperature=0, groq_api_key=groq_api_key)
     return llm
 
 
@@ -21,16 +21,16 @@ st.set_page_config(page_title="Ask from CSV File with FAQs about Napoleon")
 st.header("Ask from CSV File with FAQs about Napoleon")
 
 
-#Input OpenAI API Key
-def get_openai_api_key():
+#Input groq API Key
+def get_groq_api_key():
     input_text = st.text_input(
-        label="OpenAI API Key ",  
+        label="Groq API Key ",  
         placeholder="Ex: sk-2twmA8tfCb8un4...", 
-        key="openai_api_key_input", 
+        key="groq_api_key_input", 
         type="password")
     return input_text
 
-groq_api_key = get_openai_api_key()
+groq_api_key = get_groq_api_key()
 
 
 if groq_api_key:
