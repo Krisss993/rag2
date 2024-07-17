@@ -5,5 +5,5 @@ faiss-cpu
 langchain-community
 transformers
 pychromecast
-chroma
+chromadb
 langchain
