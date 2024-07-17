@@ -5,4 +5,4 @@ langchain-huggingface
 faiss-cpu
 langchain-community
 chromadb
-protobuf=3.19
+protobuf==3.20.3
