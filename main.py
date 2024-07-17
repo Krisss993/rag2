@@ -34,7 +34,7 @@ groq_api_key = get_groq_api_key()
 
 
 if groq_api_key:
-    embedding = HuggingFaceEmbeddings(groq_api_key=groq_api_key)
+    embedding = HuggingFaceEmbeddings(model_name="BAAI/bge-small-en-v1.5")
 
     vectordb_file_path = "my_vecdtordb"
 
