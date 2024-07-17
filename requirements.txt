@@ -6,3 +6,4 @@ faiss-cpu
 langchain-community
 chromadb
 transformers
+pychromecast
