@@ -1,11 +1,9 @@
 streamlit
-
 langchain-groq
 langchain-huggingface
 faiss-cpu
 langchain-community
-
 transformers
 pychromecast
-chroma==0.4.2
-langchain==0.0.237
+chroma
+langchain
