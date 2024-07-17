@@ -4,6 +4,7 @@ from langchain.document_loaders.csv_loader import CSVLoader
 from langchain.prompts import PromptTemplate
 from langchain.chains import RetrievalQA
 from langchain_huggingface import HuggingFaceEmbeddings
+from langchain.embeddings.sentence_transformer import SentenceTransformerEmbeddings
 from langchain_community.vectorstores import Chroma
 
 import os
@@ -34,8 +35,8 @@ groq_api_key = get_groq_api_key()
 
 
 if groq_api_key:
-    embedding = HuggingFaceEmbeddings(model_name="BAAI/bge-small-en-v1.5")
-
+    # embedding = HuggingFaceEmbeddings(model_name="BAAI/bge-small-en-v1.5")
+    embedding = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
     vectordb_file_path = "my_vecdtordb"
 
     def create_db():
