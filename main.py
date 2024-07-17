@@ -9,6 +9,8 @@ from langchain_community.vectorstores import Chroma
 
 import os
 
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
+
 #LLM and key loading function
 def load_LLM(groq_api_key):
     """Logic for loading the chain you want to use should go here."""
